@@ -21,7 +21,6 @@ package
 			//startReadJs();
 			evalFunction();
 		}
-		public var jsClass:Object;
 		private var htmlLoader:HTMLLoader=new HTMLLoader(); 
 		private var urlReq:URLRequest = new URLRequest("assets/test.html"); 
 		private var jsUrl:URLRequest = new URLRequest("assets/test.js");
@@ -43,8 +42,13 @@ package
 		private function jsLoadComplete(e:Event):void
 		{
 			var jsStr:String = e.currentTarget.data as String;
+			htmlLoader.window.Console={};
+			htmlLoader.window.Console.log = function(message:*):void
+			{
+				trace("AS中ConsoleLog："+message);
+			}
 			htmlLoader.window.eval(jsStr);
-			jsClass = new htmlLoader.window.test();
+			var jsClass:Object = new htmlLoader.window.test();
 			trace(jsClass.run())
 		}
 	}
